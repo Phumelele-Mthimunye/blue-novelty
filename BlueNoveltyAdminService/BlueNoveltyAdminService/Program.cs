@@ -1,5 +1,12 @@
+using BlueNoveltyAdminService.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ApplicationSettings"));
 // Add services to the container.
 builder.Services.AddRazorPages();
 
