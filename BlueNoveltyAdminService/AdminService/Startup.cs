@@ -1,7 +1,9 @@
 ﻿using BlueNoveltyAdminService.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using AdminService.Data;
 using System;
 using System.Text;
 
@@ -28,6 +30,7 @@ namespace AdminService
             //{
             //    c.AddPolicy("AllowOrigin", options => options.WithOrigins(Configuration.GetValue<string>("AbstractionCors")).AllowAnyHeader().WithMethods("GET", "POST", "DELETE", "PUT", "OPTIONS"));
             //});
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("localConnection")));
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "CorsPolicy", builder =>

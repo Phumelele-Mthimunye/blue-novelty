@@ -1,8 +1,11 @@
-﻿using BlueNoveltyAdminService.Models;
+﻿using AdminService.Enums;
+using BlueNoveltyAdminService.Models;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
@@ -24,7 +27,7 @@ namespace BlueNoveltyAdminService.Controllers
         [HttpPost("Login")] 
         public IActionResult Login([FromBody] Login model)
         {
-            var user = UserList.Where(x => x.Username == model.UserName).FirstOrDefault();
+            var user = UserList.Where(x => x.Email == model.Email).FirstOrDefault();
             if (user == null)
             {
                 return BadRequest("Username or Password was invalid");
@@ -46,14 +49,14 @@ namespace BlueNoveltyAdminService.Controllers
             var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new System.Security.Claims.ClaimsIdentity(new[] { new Claim("id", user.Username) }),
+                Subject = new System.Security.Claims.ClaimsIdentity(new[] { new Claim("id", user.Email) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var encrypterToken = tokenHandler.WriteToken(token);
 
-            return new { token = encrypterToken, username = user.Username };
+            return new { token = encrypterToken, username = user.Email };
         }
 
         [HttpPost("LoginWithGoogle")]
@@ -66,7 +69,7 @@ namespace BlueNoveltyAdminService.Controllers
 
             var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
 
-            var user = UserList.Where(x => x.Username == payload.Name).FirstOrDefault();
+            var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
 
             if (user != null)
             {
@@ -93,7 +96,14 @@ namespace BlueNoveltyAdminService.Controllers
         [HttpPost("Register")]
         public IActionResult Register([FromBody] Register model)
         {
-            var user = new User { Username = model.UserName };
+            var user = new User 
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserType = model.UserType, 
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email 
+            };
             if(model.ConfirmPassword == model.Password)
             {
                 using (HMACSHA512 hmac = new HMACSHA512())
