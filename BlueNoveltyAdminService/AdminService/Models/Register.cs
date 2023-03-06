@@ -8,7 +8,7 @@ namespace BlueNoveltyAdminService.Models
         [Required]
         public string FirstName { get; set; }
         [Required]
-        public string LastName { get; }
+        public string LastName { get; set; }
         [Required]
         public UserType UserType { get; set; }
         [Required]

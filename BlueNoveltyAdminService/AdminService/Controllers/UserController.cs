@@ -15,11 +15,11 @@ using System.Text;
 namespace BlueNoveltyAdminService.Controllers
 {
     
-    public class AuthController : Controller
+    public class UserController : Controller
     {
         private static List<User> UserList = new List<User>();
         private readonly AppSettings _applicationSettings;
-        public AuthController(IOptions<AppSettings> _applicationSettings) 
+        public UserController(IOptions<AppSettings> _applicationSettings) 
         { 
             this._applicationSettings = _applicationSettings.Value;
         }
@@ -102,7 +102,7 @@ namespace BlueNoveltyAdminService.Controllers
                 LastName = model.LastName,
                 UserType = model.UserType, 
                 PhoneNumber = model.PhoneNumber,
-                Email = model.Email 
+                Email = model.Email,
             };
             if(model.ConfirmPassword == model.Password)
             {
