@@ -1,7 +1,9 @@
-﻿using AdminService.Enums;
+﻿using AdminService.Data;
+using AdminService.Enums;
 using BlueNoveltyAdminService.Models;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -10,21 +12,25 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
 using System.Text;
 
 namespace BlueNoveltyAdminService.Controllers
 {
-    
+    [Route("admin")]
+    [ApiController]
     public class UserController : Controller
     {
         private static List<User> UserList = new List<User>();
         private readonly AppSettings _applicationSettings;
-        public UserController(IOptions<AppSettings> _applicationSettings) 
+        private readonly AppDbContext _context;
+        public UserController(IOptions<AppSettings> _applicationSettings, AppDbContext context) 
         { 
+            _context= context;
             this._applicationSettings = _applicationSettings.Value;
         }
 
-        [HttpPost("Login")] 
+        [HttpPost("login")] 
         public IActionResult Login([FromBody] Login model)
         {
             var user = UserList.Where(x => x.Email == model.Email).FirstOrDefault();
@@ -59,7 +65,7 @@ namespace BlueNoveltyAdminService.Controllers
             return new { token = encrypterToken, username = user.Email };
         }
 
-        [HttpPost("LoginWithGoogle")]
+        [HttpPost("login-with-google")]
         public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
         {
             var settings = new GoogleJsonWebSignature.ValidationSettings()
@@ -87,37 +93,39 @@ namespace BlueNoveltyAdminService.Controllers
 
             using (HMACSHA512 hmac = new HMACSHA512(user.PasswordSalt))
             {
-                var compute = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                var compute = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 result = compute.SequenceEqual(user.PasswordHash);
             }
             return result;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public IActionResult Register([FromBody] Register model)
         {
-            var user = new User 
+            var user = new User
             {
+                UserName = model.Username,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                UserType = model.UserType, 
+                UserType = model.UserType,
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
             };
-            if(model.ConfirmPassword == model.Password)
+            if (model.ConfirmPassword == model.Password)
             {
                 using (HMACSHA512 hmac = new HMACSHA512())
                 {
                     user.PasswordSalt = hmac.Key;
-                    user.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(model.Password));
+                    user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(model.Password));
                 }
             }
             else
             {
-                return BadRequest("Passwords dont match");
+                return BadRequest();
             }
 
-            UserList.Add(user);
+            _context.User.Add(user);
+            _context.SaveChanges();
 
             return Ok(user);
         }
