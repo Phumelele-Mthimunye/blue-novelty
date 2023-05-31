@@ -33,7 +33,7 @@ namespace BlueNoveltyAdminService.Controllers
         [HttpPost("login")] 
         public IActionResult Login([FromBody] Login model)
         {
-            var user = UserList.Where(x => x.Email == model.Email).FirstOrDefault();
+            var user = _context.User.Where(x => x.Email == model.Email).FirstOrDefault();
             if (user == null)
             {
                 return BadRequest("Username or Password was invalid");
@@ -46,10 +46,10 @@ namespace BlueNoveltyAdminService.Controllers
                 return BadRequest("Username or Password was invalid");
             }
 
-            return Ok(JWTGenerator(user));
+            return Ok(user);
         }
 
-        public dynamic JWTGenerator(User user)
+        private dynamic JWTGenerator(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
