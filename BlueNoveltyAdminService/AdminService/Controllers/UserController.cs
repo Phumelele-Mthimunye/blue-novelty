@@ -1,5 +1,7 @@
 ﻿using AdminService.Data;
 using AdminService.Enums;
+using AdminService.Models.Entities;
+using AdminService.SharedServices;
 using BlueNoveltyAdminService.Models;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
@@ -99,8 +101,8 @@ namespace BlueNoveltyAdminService.Controllers
             return result;
         }
 
-        [HttpPost("register")]
-        public IActionResult Register([FromBody] Register model)
+        /*[HttpPost("register")]
+        public GenericResponse<string> Register([FromBody] Register model)
         {
             var user = new User
             {
@@ -121,13 +123,13 @@ namespace BlueNoveltyAdminService.Controllers
             }
             else
             {
-                return BadRequest();
+                return new GenericResponse<string>(MessageOutcome.Failure);
             }
 
             _context.User.Add(user);
             _context.SaveChanges();
 
             return Ok(user);
-        }
+        }*/
     }
 }

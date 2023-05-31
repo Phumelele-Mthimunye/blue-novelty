@@ -1,6 +1,4 @@
-﻿
-using AdminService.Models;
-using BlueNoveltyAdminService.Models;
+﻿using AdminService.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 

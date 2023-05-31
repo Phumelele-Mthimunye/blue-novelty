@@ -1,14 +1,16 @@
 ﻿using AdminService.Enums;
-using AdminService.Models;
+using AdminService.Models.Dtos;
+using AdminService.SharedServices;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BlueNoveltyAdminService.Models
+namespace AdminService.Models.Entities
 {
-    public class User
+    [Table("User")]
+    public class User : IEntityFrameworkObjectId<Guid>
     {
         [Key]
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string UserName { get; set; }
         [Required]
@@ -19,8 +21,8 @@ namespace BlueNoveltyAdminService.Models
         public string Email { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        [Required] 
-        public UserType UserType { get;set; }
+        [Required]
+        public UserType UserType { get; set; }
         [Required]
         public byte[] PasswordSalt { get; set; }
         [Required]
@@ -30,5 +32,10 @@ namespace BlueNoveltyAdminService.Models
         public Skill? MainSkill { get; set; }
 
         public virtual List<Skill>? Skills { get; set; }
+
+        public void ToEntity(UserDto request)
+        {
+            
+        }
     }
 }

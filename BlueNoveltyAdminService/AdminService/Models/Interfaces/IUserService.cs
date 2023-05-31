@@ -4,8 +4,8 @@ using BlueNoveltyAdminService.Models;
 
 namespace AdminService.Models.Interfaces
 {
-    public interface IUserAdapter
+    public interface IUserService
     {
-        void Register(UserDto user);
+        GenericResponse<string> Register(UserDto user);
     }
 }

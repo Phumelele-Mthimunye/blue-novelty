@@ -1,5 +1,8 @@
 ﻿using AdminService.Data;
+using AdminService.Models.Dtos;
+using AdminService.Models.Entities;
 using AdminService.Models.Interfaces;
+using AdminService.SharedServices;
 using BlueNoveltyAdminService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -8,15 +11,18 @@ namespace AdminService.Adapter
 {
     public class UserAdapter : IUserAdapter
     {
-        private readonly AppDbContext _context;
-        public UserAdapter(AppDbContext context) 
+        private readonly IRepository<User, Guid> _repo;
+        public UserAdapter(IRepository<User, Guid> repo) 
         { 
-            _context= context;
+            _repo= repo;
         }
-        public void AddUser(User user)
+        public void Register(UserDto request)
         {
-            _context.User.Add(user);
-            _context.SaveChanges();
+            var entity = new User();
+            entity.ToEntity(request);
+            _repo.Add(entity);
+            _repo.Save();
+            
         }
     }
 }

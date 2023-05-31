@@ -1,19 +1,17 @@
-﻿using BlueNoveltyAdminService.Models;
+﻿using AdminService.SharedServices;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdminService.Models
+namespace AdminService.Models.Entities
 {
     [Table("Skill")]
-    public class Skill
+    public class Skill : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
 
-        public List<User> Users { get;set; }
-        public List<Service> Services { get;set; }
+        public List<User> Users { get; set; }
+        public List<Service> Services { get; set; }
 
         public virtual List<User> User { get; set; }
     }
