@@ -1,9 +1,15 @@
 ﻿using AdminService.Models.Dtos;
+using AdminService.Models.Entities;
 using AdminService.Models.Interfaces;
 using BlueNoveltyAdminService.Models;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SharedServices;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace BlueNoveltyAdminService.Controllers
 {
@@ -32,45 +38,46 @@ namespace BlueNoveltyAdminService.Controllers
             return _service.Login(request);
         }
 
-        //private dynamic JWTGenerator(User user)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Subject = new System.Security.Claims.ClaimsIdentity(new[] { new Claim("id", user.Email) }),
-        //        Expires = DateTime.UtcNow.AddDays(7),
-        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
-        //    };
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    var encrypterToken = tokenHandler.WriteToken(token);
+        private dynamic JWTGenerator(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Email) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var encrypterToken = tokenHandler.WriteToken(token);
 
-        //    return new { token = encrypterToken, username = user.Email };
-        //}
+            return new { token = encrypterToken, username = user.Email };
+        }
 
-        //[HttpPost("login-with-google")]
-        //public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
-        //{
-        //    var settings = new GoogleJsonWebSignature.ValidationSettings()
-        //    {
-        //        Audience = new List<string> { this._applicationSettings.GoogleClientId }
-        //    };
+        [HttpPost("login-with-google")]
+        public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string> { this._applicationSettings.GoogleClientId }
+            };
 
-        //    var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
+            var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
 
-        //    var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
+            /*var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
 
-        //    if (user != null)
-        //    {
-        //        return Ok(JWTGenerator(user));
-        //    }
-        //    else
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
+            if (user != null)
+            {
+                return Ok(JWTGenerator(user));
+            }
+            else
+            {
+                return BadRequest();
+            }*/
+            return Ok(payload);
+        }
 
-        
+
 
 
     }
