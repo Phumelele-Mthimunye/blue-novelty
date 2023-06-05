@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlueNoveltyAdminService.Models
+namespace AdminService.Models.Dtos
 {
-    public class Login
+    public class LoginDto
     {
         [Required]
         public string Email { get; set; }

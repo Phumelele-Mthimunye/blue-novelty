@@ -59,5 +59,23 @@ namespace AdminService.Models.Entities
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
             };
         }
+
+        public UserResponse ToDomain()
+        {
+            return new UserResponse()
+            {
+                Id = Id,
+                Active = Active,
+                Username = Username,
+                FirstName = FirstName,
+                LastName = LastName,
+                UserType = UserType,
+                PhoneNumber = PhoneNumber,
+                Email = Email,
+                DateOfBirth = DateOfBirth,
+                PrefferedLanguage = PrefferedLanguage,
+                MainSkill = MainSkill,        
+            };
+        }
     }
 }

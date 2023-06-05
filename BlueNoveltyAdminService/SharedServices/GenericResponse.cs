@@ -37,5 +37,11 @@ namespace SharedServices
                 this.Message = MessageOutcome.Failure.GetDescription();
             }
         }
+
+        public GenericResponse(List<GenericError> errors)
+        {
+            this.Error = errors;
+            this.Message= MessageOutcome.Failure.GetDescription();
+        }
     }
 }

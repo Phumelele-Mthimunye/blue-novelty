@@ -26,24 +26,25 @@ namespace BlueNoveltyAdminService.Controllers
             return _service.Register(request);
         }
 
-        //[HttpPost("login")] 
-        //public IActionResult Login([FromBody] Login model)
-        //{
-        //    var user = _context.User.Where(x => x.Email == model.Email).FirstOrDefault();
-        //    if (user == null)
-        //    {
-        //        return BadRequest("Username or Password was invalid");
-        //    }
+        [HttpPost("login")]
+        public GenericResponse<UserResponse> Login([FromBody] LoginDto request)
+        {
+            return _service.Login(request);
+            /*var user = _context.User.Where(x => x.Email == model.Email).FirstOrDefault();
+            if (user == null)
+            {
+                return BadRequest("Username or Password was invalid");
+            }
 
-        //    var match = CheckPassword(model.Password, user);
+            var match = CheckPassword(model.Password, user);
 
-        //    if (!match) 
-        //    {
-        //        return BadRequest("Username or Password was invalid");
-        //    }
+            if (!match)
+            {
+                return BadRequest("Username or Password was invalid");
+            }
 
-        //    return Ok(user);
-        //}
+            return Ok(user);*/
+        }
 
         //private dynamic JWTGenerator(User user)
         //{
@@ -83,17 +84,7 @@ namespace BlueNoveltyAdminService.Controllers
         //    }
         //}
 
-        //private bool CheckPassword(string password, User user)
-        //{
-        //    bool result;
-
-        //    using (HMACSHA512 hmac = new HMACSHA512(user.PasswordSalt))
-        //    {
-        //        var compute = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-        //        result = compute.SequenceEqual(user.PasswordHash);
-        //    }
-        //    return result;
-        //}
+        
 
 
     }

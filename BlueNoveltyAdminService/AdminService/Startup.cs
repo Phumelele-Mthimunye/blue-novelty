@@ -8,6 +8,7 @@ using System.Text;
 using AdminService.Models.Interfaces;
 using AdminService.Services;
 using AdminService.Adapter;
+using SharedServices;
 
 namespace AdminService
 {
@@ -23,7 +24,7 @@ namespace AdminService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("localConnection")));
+            services.AddEntityFrameworkNpgsql().AddDbContext<DbContext, AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("localConnection")));
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "CorsPolicy", builder =>
@@ -63,6 +64,7 @@ namespace AdminService
 
             //services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 
             //adapters
             services.AddScoped<IUserAdapter, UserAdapter>();
