@@ -1,4 +1,6 @@
-﻿using AdminService.Models.Entities;
+﻿
+using AdminService.Models;
+using AdminService.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 

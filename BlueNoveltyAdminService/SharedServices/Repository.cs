@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace AdminService.SharedServices
+namespace SharedServices
 {
     public class Repository<Entity, IdType> : IRepository<Entity, IdType> where Entity : class, IEntityFrameworkObjectId<IdType>
     {

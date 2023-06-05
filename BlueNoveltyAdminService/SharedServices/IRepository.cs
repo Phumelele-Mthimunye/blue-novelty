@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace AdminService.SharedServices
+namespace SharedServices
 {
     public interface IRepository<Entity, IdType>
     {

@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using AdminService.Data;
-using System;
 using System.Text;
+using AdminService.Models.Interfaces;
+using AdminService.Services;
+using AdminService.Adapter;
 
 namespace AdminService
 {
@@ -21,15 +23,6 @@ namespace AdminService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
-
-            //services.AddTransient<IActionLogService, ActionLogService>();
-            //services.AddTransient<IUserService, UserService>();
-            //services.AddTransient<IQnaService, QnaService>();
-            //services.AddCors(c =>
-            //{
-            //    c.AddPolicy("AllowOrigin", options => options.WithOrigins(Configuration.GetValue<string>("AbstractionCors")).AllowAnyHeader().WithMethods("GET", "POST", "DELETE", "PUT", "OPTIONS"));
-            //});
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("localConnection")));
             services.AddCors(options =>
             {
@@ -58,7 +51,7 @@ namespace AdminService
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
-                x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey= true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:Secret"])),
@@ -67,6 +60,12 @@ namespace AdminService
                 };
 
             });
+
+            //services
+            services.AddScoped<IUserService, UserService>();
+
+            //adapters
+            services.AddScoped<IUserAdapter, UserAdapter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

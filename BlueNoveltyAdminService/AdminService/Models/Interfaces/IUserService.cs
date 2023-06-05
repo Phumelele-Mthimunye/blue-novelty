@@ -1,6 +1,5 @@
 ﻿using AdminService.Models.Dtos;
-using AdminService.SharedServices;
-using BlueNoveltyAdminService.Models;
+using SharedServices;
 
 namespace AdminService.Models.Interfaces
 {

@@ -36,8 +36,13 @@ namespace AdminService.Models.Dtos
         [DataMember(Name = "password")]
         public string Password { get; set; }
 
-        [Required]
-        [DataMember(Name = "confirmPassword")]
-        public string ConfirmPassword { get; set; }
+        [DataMember(Name = "dateOfBirth")]
+        public DateOnly? DateOfBirth { get; set; }
+
+        [DataMember(Name = "prefferedLanguage")]
+        public string? PrefferedLanguage { get; set; }
+
+        [DataMember(Name = "mainSkill")]
+        public string? MainSkill { get; set; }
     }
 }

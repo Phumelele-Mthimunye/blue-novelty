@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace AdminService.SharedServices
+namespace SharedServices
 {
     public static class EnumExtensions
     {

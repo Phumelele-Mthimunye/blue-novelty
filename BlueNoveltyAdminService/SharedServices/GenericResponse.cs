@@ -1,7 +1,7 @@
-﻿using AdminService.Enums;
+﻿using SharedServices.Enums;
 using System.Runtime.Serialization;
 
-namespace AdminService.SharedServices
+namespace SharedServices
 {
     [DataContract]
     public class GenericResponse<T>

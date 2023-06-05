@@ -1,4 +1,4 @@
-﻿namespace AdminService.SharedServices
+﻿namespace SharedServices
 {
     public interface IEntityFrameworkObjectId<Type>
     {

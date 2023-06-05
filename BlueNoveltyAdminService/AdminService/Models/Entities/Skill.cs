@@ -1,13 +1,11 @@
-﻿using AdminService.SharedServices;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdminService.Models.Entities
 {
     [Table("Skill")]
     public class Skill : BaseEntity
     {
-        [Required]
+        [Column("Name")]
         public string Name { get; set; }
 
         public List<User> Users { get; set; }

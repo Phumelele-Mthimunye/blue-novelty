@@ -1,21 +1,9 @@
-﻿using AdminService.Data;
-using AdminService.Enums;
-using AdminService.Models.Entities;
-using AdminService.SharedServices;
+﻿using AdminService.Models.Dtos;
+using AdminService.Models.Interfaces;
 using BlueNoveltyAdminService.Models;
-using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
-using System.Text;
+using SharedServices;
 
 namespace BlueNoveltyAdminService.Controllers
 {
@@ -23,113 +11,90 @@ namespace BlueNoveltyAdminService.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private static List<User> UserList = new List<User>();
         private readonly AppSettings _applicationSettings;
-        private readonly AppDbContext _context;
-        public UserController(IOptions<AppSettings> _applicationSettings, AppDbContext context) 
-        { 
-            _context= context;
+        private readonly IUserService _service;
+
+        public UserController(IOptions<AppSettings> _applicationSettings, IUserService service) 
+        {
             this._applicationSettings = _applicationSettings.Value;
+            this._service = service;
         }
 
-        [HttpPost("login")] 
-        public IActionResult Login([FromBody] Login model)
+        [HttpPost("register")]
+        public GenericResponse<string> Register([FromBody] UserDto request)
         {
-            var user = _context.User.Where(x => x.Email == model.Email).FirstOrDefault();
-            if (user == null)
-            {
-                return BadRequest("Username or Password was invalid");
-            }
-
-            var match = CheckPassword(model.Password, user);
-
-            if (!match) 
-            {
-                return BadRequest("Username or Password was invalid");
-            }
-
-            return Ok(user);
+            return _service.Register(request);
         }
 
-        private dynamic JWTGenerator(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new System.Security.Claims.ClaimsIdentity(new[] { new Claim("id", user.Email) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var encrypterToken = tokenHandler.WriteToken(token);
+        //[HttpPost("login")] 
+        //public IActionResult Login([FromBody] Login model)
+        //{
+        //    var user = _context.User.Where(x => x.Email == model.Email).FirstOrDefault();
+        //    if (user == null)
+        //    {
+        //        return BadRequest("Username or Password was invalid");
+        //    }
 
-            return new { token = encrypterToken, username = user.Email };
-        }
+        //    var match = CheckPassword(model.Password, user);
 
-        [HttpPost("login-with-google")]
-        public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
-        {
-            var settings = new GoogleJsonWebSignature.ValidationSettings()
-            {
-                Audience = new List<string> { this._applicationSettings.GoogleClientId }
-            };
+        //    if (!match) 
+        //    {
+        //        return BadRequest("Username or Password was invalid");
+        //    }
 
-            var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
+        //    return Ok(user);
+        //}
 
-            var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
+        //private dynamic JWTGenerator(User user)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
+        //    var tokenDescriptor = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new System.Security.Claims.ClaimsIdentity(new[] { new Claim("id", user.Email) }),
+        //        Expires = DateTime.UtcNow.AddDays(7),
+        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+        //    };
+        //    var token = tokenHandler.CreateToken(tokenDescriptor);
+        //    var encrypterToken = tokenHandler.WriteToken(token);
 
-            if (user != null)
-            {
-                return Ok(JWTGenerator(user));
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
+        //    return new { token = encrypterToken, username = user.Email };
+        //}
 
-        private bool CheckPassword(string password, User user)
-        {
-            bool result;
+        //[HttpPost("login-with-google")]
+        //public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
+        //{
+        //    var settings = new GoogleJsonWebSignature.ValidationSettings()
+        //    {
+        //        Audience = new List<string> { this._applicationSettings.GoogleClientId }
+        //    };
 
-            using (HMACSHA512 hmac = new HMACSHA512(user.PasswordSalt))
-            {
-                var compute = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                result = compute.SequenceEqual(user.PasswordHash);
-            }
-            return result;
-        }
+        //    var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
 
-        /*[HttpPost("register")]
-        public GenericResponse<string> Register([FromBody] Register model)
-        {
-            var user = new User
-            {
-                UserName = model.Username,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserType = model.UserType,
-                PhoneNumber = model.PhoneNumber,
-                Email = model.Email,
-            };
-            if (model.ConfirmPassword == model.Password)
-            {
-                using (HMACSHA512 hmac = new HMACSHA512())
-                {
-                    user.PasswordSalt = hmac.Key;
-                    user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(model.Password));
-                }
-            }
-            else
-            {
-                return new GenericResponse<string>(MessageOutcome.Failure);
-            }
+        //    var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
 
-            _context.User.Add(user);
-            _context.SaveChanges();
+        //    if (user != null)
+        //    {
+        //        return Ok(JWTGenerator(user));
+        //    }
+        //    else
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
 
-            return Ok(user);
-        }*/
+        //private bool CheckPassword(string password, User user)
+        //{
+        //    bool result;
+
+        //    using (HMACSHA512 hmac = new HMACSHA512(user.PasswordSalt))
+        //    {
+        //        var compute = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        //        result = compute.SequenceEqual(user.PasswordHash);
+        //    }
+        //    return result;
+        //}
+
+
     }
 }

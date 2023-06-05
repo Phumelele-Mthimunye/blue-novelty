@@ -1,41 +1,63 @@
 ﻿using AdminService.Enums;
 using AdminService.Models.Dtos;
-using AdminService.SharedServices;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace AdminService.Models.Entities
 {
     [Table("User")]
-    public class User : IEntityFrameworkObjectId<Guid>
+    public class User : BaseEntity
     {
-        [Key]
-        public Guid Id { get; set; }
-        [Required]
-        public string UserName { get; set; }
-        [Required]
+        [Column("Username")]
+        public string Username { get; set; }
+
+        [Column("FirstName")]
         public string FirstName { get; set; }
-        [Required]
+
+        [Column("LastName")]
         public string LastName { get; set; }
-        [Required]
+
+        [Column("Email")]
         public string Email { get; set; }
-        [Required]
+
+        [Column("PhoneNumber")]
         public string PhoneNumber { get; set; }
-        [Required]
+
+        [Column("UserType")]
         public UserType UserType { get; set; }
-        [Required]
+
+        [Column("PasswordSalt")]
         public byte[] PasswordSalt { get; set; }
-        [Required]
+
+        [Column("PasswordHash")]
         public byte[] PasswordHash { get; set; }
+
+        [Column("DateOfBirth")]
         public DateOnly? DateOfBirth { get; set; }
+
+        [Column("PrefferedLanguage")]
         public string? PrefferedLanguage { get; set; }
+
+        [Column("MainSkill")]
         public Skill? MainSkill { get; set; }
 
         public virtual List<Skill>? Skills { get; set; }
 
         public void ToEntity(UserDto request)
         {
-            
+            Active = true;
+            Username = request.Username;
+            FirstName = request.FirstName;
+            LastName = request.LastName;
+            UserType = request.UserType;
+            PhoneNumber = request.PhoneNumber;
+            Email = request.Email;
+            using (HMACSHA512 hmac = new HMACSHA512())
+            {
+                PasswordSalt = hmac.Key;
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+            };
         }
     }
 }

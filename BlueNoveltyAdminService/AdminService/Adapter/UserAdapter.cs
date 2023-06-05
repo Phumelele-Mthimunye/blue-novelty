@@ -1,11 +1,7 @@
-﻿using AdminService.Data;
-using AdminService.Models.Dtos;
+﻿using AdminService.Models.Dtos;
 using AdminService.Models.Entities;
 using AdminService.Models.Interfaces;
-using AdminService.SharedServices;
-using BlueNoveltyAdminService.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Migrations;
+using SharedServices;
 
 namespace AdminService.Adapter
 {
@@ -22,7 +18,6 @@ namespace AdminService.Adapter
             entity.ToEntity(request);
             _repo.Add(entity);
             _repo.Save();
-            
         }
     }
 }

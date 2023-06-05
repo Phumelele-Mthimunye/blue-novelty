@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
-namespace AdminService.SharedServices
+namespace SharedServices
 {
     [DataContract]
     public class GenericError

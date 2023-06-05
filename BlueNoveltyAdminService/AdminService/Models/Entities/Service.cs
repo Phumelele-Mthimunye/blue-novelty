@@ -1,6 +1,4 @@
 ﻿using AdminService.Enums;
-using AdminService.SharedServices;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdminService.Models.Entities
@@ -24,7 +22,7 @@ namespace AdminService.Models.Entities
         public string OfferedRates { get; set; }
 
         [Column("SkillId")]
-        public int SkillId { get; set; }
+        public Guid SkillId { get; set; }
 
         public List<Skill> Skills { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace AdminService.Enums
+namespace SharedServices.Enums
 {
     public enum MessageOutcome
     {

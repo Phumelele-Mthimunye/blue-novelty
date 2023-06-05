@@ -1,6 +1,6 @@
-﻿using AdminService.Enums;
+﻿using SharedServices.Enums;
 
-namespace AdminService.SharedServices
+namespace SharedServices
 {
     public class ErrorCodeMapper
     {
