@@ -30,20 +30,6 @@ namespace BlueNoveltyAdminService.Controllers
         public GenericResponse<UserResponse> Login([FromBody] LoginDto request)
         {
             return _service.Login(request);
-            /*var user = _context.User.Where(x => x.Email == model.Email).FirstOrDefault();
-            if (user == null)
-            {
-                return BadRequest("Username or Password was invalid");
-            }
-
-            var match = CheckPassword(model.Password, user);
-
-            if (!match)
-            {
-                return BadRequest("Username or Password was invalid");
-            }
-
-            return Ok(user);*/
         }
 
         //private dynamic JWTGenerator(User user)
