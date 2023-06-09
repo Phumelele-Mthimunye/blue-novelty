@@ -1,9 +1,13 @@
-﻿using BlueNoveltyAdminService.Models;
+﻿using AdminService.Models.Dtos;
+using AdminService.Models.Entities;
 
 namespace AdminService.Models.Interfaces
 {
     public interface IUserAdapter
     {
-        public void AddUser(User user);
+        void Register(UserDto user);
+        bool EmailExists(string email);
+        User GetUserByEmail(string email);
+        UserResponse Login(LoginDto request);
     }
 }

@@ -1,18 +1,14 @@
-﻿using AdminService.Data;
-using AdminService.Enums;
+﻿using AdminService.Models.Dtos;
+using AdminService.Models.Entities;
+using AdminService.Models.Interfaces;
 using BlueNoveltyAdminService.Models;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+using SharedServices;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
 using System.Text;
 
 namespace BlueNoveltyAdminService.Controllers
@@ -21,41 +17,34 @@ namespace BlueNoveltyAdminService.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private static List<User> UserList = new List<User>();
         private readonly AppSettings _applicationSettings;
-        private readonly AppDbContext _context;
-        public UserController(IOptions<AppSettings> _applicationSettings, AppDbContext context) 
-        { 
-            _context= context;
-            this._applicationSettings = _applicationSettings.Value;
-        }
+        private readonly IUserService _service;
 
-        [HttpPost("login")] 
-        public IActionResult Login([FromBody] Login model)
+        public UserController(IOptions<AppSettings> _applicationSettings, IUserService service) 
         {
-            var user = UserList.Where(x => x.Email == model.Email).FirstOrDefault();
-            if (user == null)
-            {
-                return BadRequest("Username or Password was invalid");
-            }
-
-            var match = CheckPassword(model.Password, user);
-
-            if (!match) 
-            {
-                return BadRequest("Username or Password was invalid");
-            }
-
-            return Ok(JWTGenerator(user));
+            this._applicationSettings = _applicationSettings.Value;
+            this._service = service;
         }
 
-        public dynamic JWTGenerator(User user)
+        [HttpPost("register")]
+        public GenericResponse<string> Register([FromBody] UserDto request)
+        {
+            return _service.Register(request);
+        }
+
+        [HttpPost("login")]
+        public GenericResponse<UserResponse> Login([FromBody] LoginDto request)
+        {
+            return _service.Login(request);
+        }
+
+        private dynamic JWTGenerator(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new System.Security.Claims.ClaimsIdentity(new[] { new Claim("id", user.Email) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Email) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
@@ -75,7 +64,7 @@ namespace BlueNoveltyAdminService.Controllers
 
             var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
 
-            var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
+            /*var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
 
             if (user != null)
             {
@@ -84,50 +73,12 @@ namespace BlueNoveltyAdminService.Controllers
             else
             {
                 return BadRequest();
-            }
+            }*/
+            return Ok(payload);
         }
 
-        private bool CheckPassword(string password, User user)
-        {
-            bool result;
 
-            using (HMACSHA512 hmac = new HMACSHA512(user.PasswordSalt))
-            {
-                var compute = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                result = compute.SequenceEqual(user.PasswordHash);
-            }
-            return result;
-        }
 
-        [HttpPost("register")]
-        public IActionResult Register([FromBody] Register model)
-        {
-            var user = new User
-            {
-                UserName = model.Username,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserType = model.UserType,
-                PhoneNumber = model.PhoneNumber,
-                Email = model.Email,
-            };
-            if (model.ConfirmPassword == model.Password)
-            {
-                using (HMACSHA512 hmac = new HMACSHA512())
-                {
-                    user.PasswordSalt = hmac.Key;
-                    user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(model.Password));
-                }
-            }
-            else
-            {
-                return BadRequest();
-            }
 
-            _context.User.Add(user);
-            _context.SaveChanges();
-
-            return Ok(user);
-        }
     }
 }

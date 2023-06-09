@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminService", "AdminService\AdminService.csproj", "{2A973EF5-E90F-4FFD-87B1-67655FFCCC47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminService", "AdminService\AdminService.csproj", "{2A973EF5-E90F-4FFD-87B1-67655FFCCC47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedServices", "SharedServices\SharedServices.csproj", "{AE264C8D-DB41-451C-A5D1-7358C3E7D604}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2A973EF5-E90F-4FFD-87B1-67655FFCCC47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A973EF5-E90F-4FFD-87B1-67655FFCCC47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A973EF5-E90F-4FFD-87B1-67655FFCCC47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE264C8D-DB41-451C-A5D1-7358C3E7D604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE264C8D-DB41-451C-A5D1-7358C3E7D604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE264C8D-DB41-451C-A5D1-7358C3E7D604}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE264C8D-DB41-451C-A5D1-7358C3E7D604}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

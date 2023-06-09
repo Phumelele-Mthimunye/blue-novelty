@@ -1,25 +1,28 @@
 ﻿using AdminService.Enums;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdminService.Models
+namespace AdminService.Models.Entities
 {
     [Table("Service")]
-    public class Service
+    public class Service : BaseEntity
     {
-        [Key]
-        public Guid Guid { get; set; }
-        [Required]
+        [Column("serviceType")]
         public ServiceType ServiceType { get; set; }
-        [Required]
+
+        [Column("serviceDescription")]
         public string ServiceDescription { get; set; }
+
+        [Column("instructions")]
         public string? Instructions { get; set; }
-        [Required]
+
+        [Column("prefferedDates")]
         public string PrefferedDates { get; set; }
-        [Required]
-        public string OfferedRates { get;set; }
-        [Required]
-        public int SkillId { get; set;}
+
+        [Column("offeredRates")]
+        public string OfferedRates { get; set; }
+
+        [Column("SkillId")]
+        public Guid SkillId { get; set; }
 
         public List<Skill> Skills { get; set; }
 

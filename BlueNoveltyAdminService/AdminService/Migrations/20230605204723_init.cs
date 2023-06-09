@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -14,53 +12,54 @@ namespace AdminService.Migrations
                 name: "Service",
                 columns: table => new
                 {
-                    Guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    ServiceType = table.Column<int>(type: "integer", nullable: false),
-                    ServiceDescription = table.Column<string>(type: "text", nullable: false),
-                    Instructions = table.Column<string>(type: "text", nullable: true),
-                    PrefferedDates = table.Column<string>(type: "text", nullable: false),
-                    OfferedRates = table.Column<string>(type: "text", nullable: false),
-                    SkillId = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    serviceType = table.Column<int>(type: "integer", nullable: false),
+                    serviceDescription = table.Column<string>(type: "text", nullable: false),
+                    instructions = table.Column<string>(type: "text", nullable: true),
+                    prefferedDates = table.Column<string>(type: "text", nullable: false),
+                    offeredRates = table.Column<string>(type: "text", nullable: false),
+                    SkillId = table.Column<Guid>(type: "uuid", nullable: false),
+                    active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Service", x => x.Guid);
+                    table.PrimaryKey("PK_Service", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Skill",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Skill", x => x.Id);
+                    table.PrimaryKey("PK_Skill", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ServiceSkill",
                 columns: table => new
                 {
-                    ServicesGuid = table.Column<Guid>(type: "uuid", nullable: false),
-                    SkillsId = table.Column<int>(type: "integer", nullable: false)
+                    ServicesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SkillsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServiceSkill", x => new { x.ServicesGuid, x.SkillsId });
+                    table.PrimaryKey("PK_ServiceSkill", x => new { x.ServicesId, x.SkillsId });
                     table.ForeignKey(
-                        name: "FK_ServiceSkill_Service_ServicesGuid",
-                        column: x => x.ServicesGuid,
+                        name: "FK_ServiceSkill_Service_ServicesId",
+                        column: x => x.ServicesId,
                         principalTable: "Service",
-                        principalColumn: "Guid",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ServiceSkill_Skill_SkillsId",
                         column: x => x.SkillsId,
                         principalTable: "Skill",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -68,7 +67,8 @@ namespace AdminService.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Guid = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
@@ -78,39 +78,40 @@ namespace AdminService.Migrations
                     PasswordHash = table.Column<byte[]>(type: "bytea", nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
                     PrefferedLanguage = table.Column<string>(type: "text", nullable: true),
-                    MainSkillId = table.Column<int>(type: "integer", nullable: true)
+                    MainSkillId = table.Column<Guid>(type: "uuid", nullable: true),
+                    active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Guid);
+                    table.PrimaryKey("PK_User", x => x.id);
                     table.ForeignKey(
                         name: "FK_User_Skill_MainSkillId",
                         column: x => x.MainSkillId,
                         principalTable: "Skill",
-                        principalColumn: "Id");
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "SkillUser",
                 columns: table => new
                 {
-                    SkillsId = table.Column<int>(type: "integer", nullable: false),
-                    UsersGuid = table.Column<Guid>(type: "uuid", nullable: false)
+                    SkillsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UsersId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SkillUser", x => new { x.SkillsId, x.UsersGuid });
+                    table.PrimaryKey("PK_SkillUser", x => new { x.SkillsId, x.UsersId });
                     table.ForeignKey(
                         name: "FK_SkillUser_Skill_SkillsId",
                         column: x => x.SkillsId,
                         principalTable: "Skill",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SkillUser_User_UsersGuid",
-                        column: x => x.UsersGuid,
+                        name: "FK_SkillUser_User_UsersId",
+                        column: x => x.UsersId,
                         principalTable: "User",
-                        principalColumn: "Guid",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -120,9 +121,9 @@ namespace AdminService.Migrations
                 column: "SkillsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SkillUser_UsersGuid",
+                name: "IX_SkillUser_UsersId",
                 table: "SkillUser",
-                column: "UsersGuid");
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_MainSkillId",
