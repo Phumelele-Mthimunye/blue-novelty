@@ -10,7 +10,7 @@ namespace SharedServices
         public T Data { get; set; }
 
         [DataMember(Name = "errors")]
-        public List<GenericError> Error { get; set; }
+        public List<GenericError> Errors { get; set; }
 
         [DataMember(Name = "message")]
         public string Message { get; set; }
@@ -33,14 +33,14 @@ namespace SharedServices
                 {
                     new GenericError("Internal", ErrorCodeEnum.Internal.GetDescription(), "Error: An Internal error has occured")
                 };
-                this.Error = errors;
+                this.Errors = errors;
                 this.Message = MessageOutcome.Failure.GetDescription();
             }
         }
 
         public GenericResponse(List<GenericError> errors)
         {
-            this.Error = errors;
+            this.Errors = errors;
             this.Message= MessageOutcome.Failure.GetDescription();
         }
     }
