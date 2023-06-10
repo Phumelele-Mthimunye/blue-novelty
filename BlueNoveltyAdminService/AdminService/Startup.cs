@@ -41,8 +41,7 @@ namespace AdminService
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlueNoveltyAdminService", Version = "v1" });
             });
 
-            services.Configure<AppSettings>(
-                Configuration.GetSection("ApplicationSettings"));
+            services.Configure<AppSettings>(Configuration.GetSection("ApplicationSettings"));
 
             services.AddAuthentication(x =>
             {

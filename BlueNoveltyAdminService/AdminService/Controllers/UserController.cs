@@ -38,23 +38,9 @@ namespace BlueNoveltyAdminService.Controllers
             return _service.Login(request);
         }
 
-        private dynamic JWTGenerator(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Email) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var encrypterToken = tokenHandler.WriteToken(token);
+        
 
-            return new { token = encrypterToken, username = user.Email };
-        }
-
-        [HttpPost("login-with-google")]
+        /* [HttpPost("login-with-google")]
         public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
         {
             var settings = new GoogleJsonWebSignature.ValidationSettings()
@@ -64,7 +50,7 @@ namespace BlueNoveltyAdminService.Controllers
 
             var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
 
-            /*var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
+            *//*var user = UserList.Where(x => x.Email == payload.Email).FirstOrDefault();
 
             if (user != null)
             {
@@ -73,9 +59,9 @@ namespace BlueNoveltyAdminService.Controllers
             else
             {
                 return BadRequest();
-            }*/
+            }*//*
             return Ok(payload);
-        }
+        }*/
 
 
 

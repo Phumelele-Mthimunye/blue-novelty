@@ -1,10 +1,13 @@
-﻿using AdminService.Enums;
-using AdminService.Models.Dtos;
+﻿using AdminService.Models.Dtos;
 using AdminService.Models.Entities;
 using AdminService.Models.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using BlueNoveltyAdminService.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SharedServices;
 using SharedServices.Enums;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,10 +16,12 @@ namespace AdminService.Services
     public class UserService: IUserService
     {
         private IUserAdapter _adapter;
+        private readonly AppSettings _applicationSettings;
 
-        public UserService(IUserAdapter adapter)
+        public UserService(IUserAdapter adapter, IOptions<AppSettings> appSettings)
         {
             _adapter = adapter;
+            _applicationSettings = appSettings.Value;
         }
 
         public GenericResponse<UserResponse> Login(LoginDto request)
@@ -29,7 +34,7 @@ namespace AdminService.Services
                 {
                     var errors = new List<GenericError>
                     {
-                        new GenericError(this.GetDataMemberFieldName(nameof(request.Email)), ErrorCodeEnum.Custom.GetDescription(), "ERROR. INVALID EMAIL")
+                        new GenericError(this.GetDataMemberFieldName(nameof(request.Email)), ErrorCodeEnum.Custom.GetDescription(), "ERROR. INVALID EMAIL OR PASSWORD")
                     };
                     return new GenericResponse<UserResponse>(errors);
                 }
@@ -40,12 +45,12 @@ namespace AdminService.Services
                 {
                     var errors = new List<GenericError>
                     {
-                        new GenericError(this.GetDataMemberFieldName(nameof(request.Email)), ErrorCodeEnum.Custom.GetDescription(), "ERROR. INVALID PASSWORD")
+                        new GenericError(this.GetDataMemberFieldName(nameof(request.Email)), ErrorCodeEnum.Custom.GetDescription(), "ERROR. INVALID EMAIL OR PASSWORD")
                     };
                     return new GenericResponse<UserResponse>(errors);
                 }
                 var response = _adapter.Login(request);
-                return new GenericResponse<UserResponse>(response);
+                return new GenericResponse<UserResponse>(JWTGenerator(response));
             }
             catch
             {
@@ -70,7 +75,7 @@ namespace AdminService.Services
             }
             catch
             {
-                return new GenericResponse<string>(MessageOutcome.Success);
+                return new GenericResponse<string>(MessageOutcome.Failure);
             }
         }
 
@@ -84,6 +89,22 @@ namespace AdminService.Services
                 result = compute.SequenceEqual(user.PasswordHash);
             }
             return result;
+        }
+
+        private dynamic JWTGenerator(UserResponse user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Email) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var encrypterToken = tokenHandler.WriteToken(token);
+
+            return new { token = encrypterToken, username = user.Email };
         }
     }
 }
