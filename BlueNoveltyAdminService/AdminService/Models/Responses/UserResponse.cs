@@ -34,5 +34,8 @@ namespace AdminService.Models.Dtos
 
         [DataMember(Name = "mainSkill")]
         public Skill? MainSkill { get; set; }
+
+        [DataMember(Name = "token")]
+        public string Token { get; set; }
     }
 }

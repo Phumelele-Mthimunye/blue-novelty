@@ -91,20 +91,22 @@ namespace AdminService.Services
             return result;
         }
 
-        private dynamic JWTGenerator(UserResponse user)
+        private UserResponse JWTGenerator(UserResponse user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(this._applicationSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Email) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Username) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var encrypterToken = tokenHandler.WriteToken(token);
 
-            return new { token = encrypterToken, username = user.Email };
+            user.Token = encrypterToken;
+
+            return user;
         }
     }
 }
