@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models.Entities
 {
-    [Table("HouseholdCleaningPricing")]
+    [Table("HouseholdCleaningPricings")]
     public class HouseholdCleaningPricing : BaseEntity
     {
         [Required]

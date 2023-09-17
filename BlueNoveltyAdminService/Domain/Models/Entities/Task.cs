@@ -2,7 +2,7 @@
 
 namespace Domain.Models.Entities
 {
-    [Table("Task")]
+    [Table("Tasks")]
     public class Task : BaseEntity
     {
         
@@ -19,7 +19,6 @@ namespace Domain.Models.Entities
         [Column("name")]
         public string Name { get; set; }
 
-        public List<User> Users { get; set; }
         public List<Service> Services { get; set; }
         public virtual List<User> User { get; set; }
     }

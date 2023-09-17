@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models.Entities
 {
-    [Table("Service")]
+    [Table("Services")]
     public class Service : BaseEntity
     {
         //user id
@@ -48,8 +48,6 @@ namespace Domain.Models.Entities
 
         //list of tasks
         public List<Task> Tasks { get; set; }
-
-
 
     }
 }

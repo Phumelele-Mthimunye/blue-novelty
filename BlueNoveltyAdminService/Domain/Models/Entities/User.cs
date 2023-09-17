@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Domain.Models.Entities
 {
-    [Table("User")]
+    [Table("Users")]
     public class User : BaseEntity
     {
         [Column("Username")]
@@ -39,7 +39,7 @@ namespace Domain.Models.Entities
         [Column("PrefferedLanguage")]
         public string? PrefferedLanguage { get; set; }
 
-        public virtual List<Task>? Skills { get; set; }
+        public virtual List<CleaningRequest>? CleaningRequests { get; set; }
 
         public void ToEntity(UserDto request)
         {

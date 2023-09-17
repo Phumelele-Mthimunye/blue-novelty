@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Models.Entities
 {
     [Table("HouseholdDetails")]
-    public class HouseholdDetails : BaseEntity
+    public class HouseholdDetail : BaseEntity
     {
         [Required]
         [Column("numberOfBedrooms")]
@@ -18,5 +18,7 @@ namespace Domain.Models.Entities
         [Required]
         [Column("numberOfAdditionalRooms")]
         public int NumberOfAdditionalRooms { get; set; }
+
+        public virtual List<CleaningRequest>? CleaningRequests { get; set; }
     }
 }

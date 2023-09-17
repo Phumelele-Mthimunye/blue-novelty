@@ -1,21 +1,38 @@
 ﻿using Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using SharedServices.ApiMiddleware.Interfaces;
 
 namespace Domain.Data
 {
+    public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    {
+        public AppDbContext CreateDbContext(string[] args)
+        {
+            var optionBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            optionBuilder.UseNpgsql("Host=localhost;Port=5432;Database=BlueNovelty;Username=postgres;Password=Gem@123!!");
+
+            return new AppDbContext(optionBuilder.Options, null);
+        }
+    }
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        private IRequestContextService<long> _requestContextService;
+        public AppDbContext(DbContextOptions options, IRequestContextService<long> requestContextService): base(options)
+        {
+            _requestContextService = requestContextService;
+        }     
 
         //Models
-        public DbSet<User> User { get; set; }
-        public DbSet<Models.Entities.Task> Task { get; set; }
-        public DbSet<Service> Service { get; set; }
+        //public DbSet<Expertise>? Expertise { get; set; }
+        public DbSet<HouseholdCleaningPricing>? HouseholdCleaningPricings { get; set; }
+        public DbSet<HouseholdDetail>? HouseholdDetails { get; set; }
+        public DbSet<CleaningRequest>? CleaningRequests { get; set; }
+        public DbSet<User>? Users { get; set; }
+        //public DbSet<Models.Entities.Task>? Tasks { get; set; }
+        //public DbSet<Service>? Services { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasMany(s => s.Skills)
-                .WithMany(c => c.Users);
         }
     }
 }
