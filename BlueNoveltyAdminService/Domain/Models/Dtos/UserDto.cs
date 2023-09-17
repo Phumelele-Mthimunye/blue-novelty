@@ -1,30 +1,40 @@
-﻿using AdminService.Enums;
-using AdminService.Models.Entities;
-using AdminService.Models.Responses;
+﻿using Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace AdminService.Models.Dtos
+namespace Domain.Models.Dtos
 {
-    public class UserResponse : ResponseBase
+    public class UserDto
     {
+        [Required]
         [DataMember(Name = "username")]
         public string Username { get; set; }
 
+        [Required]
         [DataMember(Name = "firstName")]
         public string FirstName { get; set; }
 
+        [Required]
         [DataMember(Name = "lastName")]
         public string LastName { get; set; }
 
+        [Required]
         [DataMember(Name = "userType")]
         public UserType UserType { get; set; }
 
+        [Required]
+        [MaxLength(20)]
         [DataMember(Name = "phoneNumber")]
         public string PhoneNumber { get; set; }
 
+        [Required]
+        [EmailAddress]
         [DataMember(Name = "email")]
         public string Email { get; set; }
+
+        [Required]
+        [DataMember(Name = "password")]
+        public string Password { get; set; }
 
         [DataMember(Name = "dateOfBirth")]
         public DateOnly? DateOfBirth { get; set; }
@@ -33,9 +43,6 @@ namespace AdminService.Models.Dtos
         public string? PrefferedLanguage { get; set; }
 
         [DataMember(Name = "mainSkill")]
-        public Skill? MainSkill { get; set; }
-
-        [DataMember(Name = "token")]
-        public string Token { get; set; }
+        public string? MainSkill { get; set; }
     }
 }

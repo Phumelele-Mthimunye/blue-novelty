@@ -1,10 +1,10 @@
-﻿using AdminService.Enums;
-using AdminService.Models.Dtos;
+﻿using Domain.Enums;
+using Domain.Models.Dtos;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AdminService.Models.Entities
+namespace Domain.Models.Entities
 {
     [Table("User")]
     public class User : BaseEntity
@@ -39,10 +39,7 @@ namespace AdminService.Models.Entities
         [Column("PrefferedLanguage")]
         public string? PrefferedLanguage { get; set; }
 
-        [Column("MainSkill")]
-        public Skill? MainSkill { get; set; }
-
-        public virtual List<Skill>? Skills { get; set; }
+        public virtual List<Task>? Skills { get; set; }
 
         public void ToEntity(UserDto request)
         {
@@ -74,7 +71,6 @@ namespace AdminService.Models.Entities
                 Email = Email,
                 DateOfBirth = DateOfBirth,
                 PrefferedLanguage = PrefferedLanguage,
-                MainSkill = MainSkill,        
             };
         }
     }

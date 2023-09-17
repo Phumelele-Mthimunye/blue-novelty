@@ -1,4 +1,4 @@
-﻿namespace BlueNoveltyAdminService.Models
+﻿namespace Domain.Models
 {
     public class AppSettings
     {

@@ -1,4 +1,4 @@
-﻿namespace AdminService.Enums
+﻿namespace Domain.Enums
 {
     public enum ServiceType
     {

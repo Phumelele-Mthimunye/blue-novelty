@@ -1,15 +1,9 @@
-﻿using AdminService.Models.Dtos;
-using AdminService.Models.Entities;
-using AdminService.Models.Interfaces;
-using BlueNoveltyAdminService.Models;
-using Google.Apis.Auth;
+﻿using Domain.Models.Interfaces;
+using Domain.Models;
+using Domain.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using SharedServices;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace BlueNoveltyAdminService.Controllers
 {

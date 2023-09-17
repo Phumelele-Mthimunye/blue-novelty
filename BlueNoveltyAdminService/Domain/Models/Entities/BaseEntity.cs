@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdminService.Models.Entities
+namespace Domain.Models.Entities
 {
     public class BaseEntity : IEntityFrameworkObjectId<Guid>
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace AdminService.Models.Responses
+namespace Domain.Models.Responses
 {
     public class ResponseBase
     {

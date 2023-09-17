@@ -1,6 +1,6 @@
-﻿using AdminService.Models.Dtos;
-using AdminService.Models.Entities;
-using AdminService.Models.Interfaces;
+﻿using Domain.Models.Dtos;
+using Domain.Models.Entities;
+using Domain.Models.Interfaces;
 using SharedServices;
 
 namespace AdminService.Adapter

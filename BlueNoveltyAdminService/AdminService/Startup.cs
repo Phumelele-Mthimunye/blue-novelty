@@ -1,14 +1,14 @@
-﻿using BlueNoveltyAdminService.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using AdminService.Data;
 using System.Text;
-using AdminService.Models.Interfaces;
 using AdminService.Services;
 using AdminService.Adapter;
 using SharedServices;
+using Domain.Data;
+using Domain.Models;
+using Domain.Models.Interfaces;
 
 namespace AdminService
 {

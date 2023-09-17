@@ -1,7 +1,6 @@
-﻿using AdminService.Models.Dtos;
-using AdminService.Models.Entities;
-using AdminService.Models.Interfaces;
-using BlueNoveltyAdminService.Models;
+﻿using Domain.Models.Interfaces;
+using Domain.Models.Dtos;
+using Domain.Models.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SharedServices;
@@ -10,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Domain.Models;
 
 namespace AdminService.Services
 {

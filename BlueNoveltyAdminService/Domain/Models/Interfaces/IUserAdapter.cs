@@ -1,7 +1,7 @@
-﻿using AdminService.Models.Dtos;
-using AdminService.Models.Entities;
+﻿using Domain.Models.Dtos;
+using Domain.Models.Entities;
 
-namespace AdminService.Models.Interfaces
+namespace Domain.Models.Interfaces
 {
     public interface IUserAdapter
     {

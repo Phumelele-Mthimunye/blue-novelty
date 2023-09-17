@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdminService.Models.Dtos
+namespace Domain.Models.Dtos
 {
     public class LoginDto
     {

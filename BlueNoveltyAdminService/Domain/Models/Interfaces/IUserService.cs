@@ -1,8 +1,7 @@
-﻿using AdminService.Models.Dtos;
-using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Models.Dtos;
 using SharedServices;
 
-namespace AdminService.Models.Interfaces
+namespace Domain.Models.Interfaces
 {
     public interface IUserService
     {
