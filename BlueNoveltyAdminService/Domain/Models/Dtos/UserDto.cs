@@ -19,10 +19,6 @@ namespace Domain.Models.Dtos
         public string LastName { get; set; }
 
         [Required]
-        [DataMember(Name = "userType")]
-        public UserType UserType { get; set; }
-
-        [Required]
         [MaxLength(20)]
         [DataMember(Name = "phoneNumber")]
         public string PhoneNumber { get; set; }
@@ -41,8 +37,5 @@ namespace Domain.Models.Dtos
 
         [DataMember(Name = "prefferedLanguage")]
         public string? PrefferedLanguage { get; set; }
-
-        [DataMember(Name = "mainSkill")]
-        public string? MainSkill { get; set; }
     }
 }

@@ -7,14 +7,14 @@ using SharedServices;
 
 namespace BlueNoveltyAdminService.Controllers
 {
-    [Route("admin")]
+    [Route("customer")]
     [ApiController]
-    public class UserController : Controller
+    public class CustomerController : Controller
     {
         private readonly AppSettings _applicationSettings;
-        private readonly IUserService _service;
+        private readonly ICustomerService _service;
 
-        public UserController(IOptions<AppSettings> _applicationSettings, IUserService service) 
+        public CustomerController(IOptions<AppSettings> _applicationSettings, ICustomerService service) 
         {
             this._applicationSettings = _applicationSettings.Value;
             this._service = service;

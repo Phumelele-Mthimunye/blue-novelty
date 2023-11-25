@@ -1,38 +1,43 @@
-﻿using Domain.Enums;
-using Domain.Models.Dtos;
+﻿using Domain.Models.Dtos;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Domain.Models.Entities
 {
-    [Table("Users")]
-    public class User : BaseEntity
+    [Table("ServiceProviders")]
+    public class ServiceProvider : BaseEntity
     {
+        [Required]
         [Column("Username")]
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
+        [Required]
         [Column("FirstName")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
+        [Required]
         [Column("LastName")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
+        [Required]
         [Column("Email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
+        [Required]
         [Column("PhoneNumber")]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
-        [Column("UserType")]
-        public UserType UserType { get; set; }
-
+        [Required]
         [Column("PasswordSalt")]
-        public byte[] PasswordSalt { get; set; }
+        public byte[]? PasswordSalt { get; set; }
 
+        [Required]
         [Column("PasswordHash")]
-        public byte[] PasswordHash { get; set; }
+        public byte[]? PasswordHash { get; set; }
 
+        [Required]
         [Column("DateOfBirth")]
         public DateOnly? DateOfBirth { get; set; }
 
@@ -47,7 +52,6 @@ namespace Domain.Models.Entities
             Username = request.Username;
             FirstName = request.FirstName;
             LastName = request.LastName;
-            UserType = request.UserType;
             PhoneNumber = request.PhoneNumber;
             Email = request.Email;
             using (HMACSHA512 hmac = new HMACSHA512())
@@ -66,7 +70,6 @@ namespace Domain.Models.Entities
                 Username = Username,
                 FirstName = FirstName,
                 LastName = LastName,
-                UserType = UserType,
                 PhoneNumber = PhoneNumber,
                 Email = Email,
                 DateOfBirth = DateOfBirth,

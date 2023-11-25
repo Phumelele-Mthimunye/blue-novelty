@@ -10,12 +10,31 @@ namespace Domain.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "bytea", nullable: false),
+                    active = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HouseholdCleaningPricings",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    room = table.Column<string>(type: "text", nullable: false),
-                    roomServiceDescription = table.Column<string>(type: "text", nullable: false),
+                    cleaningTask = table.Column<string>(type: "text", nullable: false),
+                    cleaningTaskDescription = table.Column<string>(type: "text", nullable: true),
                     price = table.Column<decimal>(type: "numeric", nullable: false),
                     active = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -31,7 +50,12 @@ namespace Domain.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     numberOfBedrooms = table.Column<int>(type: "integer", nullable: false),
                     numberOfBathrooms = table.Column<int>(type: "integer", nullable: false),
-                    numberOfAdditionalRooms = table.Column<int>(type: "integer", nullable: false),
+                    laundry = table.Column<bool>(type: "boolean", nullable: false),
+                    fridge = table.Column<bool>(type: "boolean", nullable: false),
+                    garage = table.Column<bool>(type: "boolean", nullable: false),
+                    cabinets = table.Column<bool>(type: "boolean", nullable: false),
+                    windows = table.Column<bool>(type: "boolean", nullable: false),
+                    walls = table.Column<bool>(type: "boolean", nullable: false),
                     active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -40,7 +64,7 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "ServiceProviders",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -49,16 +73,29 @@ namespace Domain.Migrations
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
-                    UserType = table.Column<int>(type: "integer", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "bytea", nullable: false),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
+                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     PrefferedLanguage = table.Column<string>(type: "text", nullable: true),
                     active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.id);
+                    table.PrimaryKey("PK_ServiceProviders", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    serviceName = table.Column<string>(type: "text", nullable: true),
+                    serviceDescription = table.Column<string>(type: "text", nullable: true),
+                    active = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,14 +106,20 @@ namespace Domain.Migrations
                     dateOfRequest = table.Column<DateOnly>(type: "date", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
                     totalPrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    user_Id = table.Column<Guid>(type: "uuid", nullable: true),
-                    userId = table.Column<Guid>(type: "uuid", nullable: true),
+                    customer_Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    customerId = table.Column<Guid>(type: "uuid", nullable: true),
                     householdDetail_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    serviceProvider_Id = table.Column<Guid>(type: "uuid", nullable: true),
                     active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CleaningRequests", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_CleaningRequests_Customers_customerId",
+                        column: x => x.customerId,
+                        principalTable: "Customers",
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_CleaningRequests_HouseholdDetails_householdDetail_Id",
                         column: x => x.householdDetail_Id,
@@ -84,11 +127,16 @@ namespace Domain.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CleaningRequests_Users_userId",
-                        column: x => x.userId,
-                        principalTable: "Users",
+                        name: "FK_CleaningRequests_ServiceProviders_serviceProvider_Id",
+                        column: x => x.serviceProvider_Id,
+                        principalTable: "ServiceProviders",
                         principalColumn: "id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CleaningRequests_customerId",
+                table: "CleaningRequests",
+                column: "customerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CleaningRequests_householdDetail_Id",
@@ -96,9 +144,9 @@ namespace Domain.Migrations
                 column: "householdDetail_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CleaningRequests_userId",
+                name: "IX_CleaningRequests_serviceProvider_Id",
                 table: "CleaningRequests",
-                column: "userId");
+                column: "serviceProvider_Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -110,10 +158,16 @@ namespace Domain.Migrations
                 name: "HouseholdCleaningPricings");
 
             migrationBuilder.DropTable(
+                name: "Services");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
                 name: "HouseholdDetails");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "ServiceProviders");
         }
     }
 }

@@ -3,11 +3,11 @@ using Domain.Models.Entities;
 
 namespace Domain.Models.Interfaces
 {
-    public interface IUserAdapter
+    public interface ICustomerAdapter
     {
         void Register(UserDto user);
         bool EmailExists(string email);
-        User GetUserByEmail(string email);
+        Customer GetUserByEmail(string email);
         UserResponse Login(LoginDto request);
     }
 }

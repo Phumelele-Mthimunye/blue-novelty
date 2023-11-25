@@ -7,12 +7,11 @@ namespace Domain.Models.Entities
     public class HouseholdCleaningPricing : BaseEntity
     {
         [Required]
-        [Column("room")]
-        public string Room { get; set; }
+        [Column("cleaningTask")]
+        public string? CleaningTask { get; set; }
 
-        [Required]
-        [Column("roomServiceDescription")]
-        public string RoomServiceDescription { get; set; }
+        [Column("cleaningTaskDescription")]
+        public string? CleaningTaskDescription { get; set; }
 
         [Required]
         [Column("price")]

@@ -13,12 +13,12 @@ using Domain.Models;
 
 namespace AdminService.Services
 {
-    public class UserService: IUserService
+    public class CustomerService: ICustomerService
     {
-        private IUserAdapter _adapter;
+        private ICustomerAdapter _adapter;
         private readonly AppSettings _applicationSettings;
 
-        public UserService(IUserAdapter adapter, IOptions<AppSettings> appSettings)
+        public CustomerService(ICustomerAdapter adapter, IOptions<AppSettings> appSettings)
         {
             _adapter = adapter;
             _applicationSettings = appSettings.Value;
@@ -79,14 +79,14 @@ namespace AdminService.Services
             }
         }
 
-        private bool CheckPassword(string password, User user)
+        private bool CheckPassword(string password, Customer customer)
         {
             bool result;
 
-            using (HMACSHA512 hmac = new HMACSHA512(user.PasswordSalt))
+            using (HMACSHA512 hmac = new HMACSHA512(customer.PasswordSalt))
             {
                 var compute = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                result = compute.SequenceEqual(user.PasswordHash);
+                result = compute.SequenceEqual(customer.PasswordHash);
             }
             return result;
         }

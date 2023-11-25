@@ -24,13 +24,12 @@ namespace Domain.Data
         }     
 
         //Models
-        //public DbSet<Expertise>? Expertise { get; set; }
         public DbSet<HouseholdCleaningPricing>? HouseholdCleaningPricings { get; set; }
         public DbSet<HouseholdDetail>? HouseholdDetails { get; set; }
         public DbSet<CleaningRequest>? CleaningRequests { get; set; }
-        public DbSet<User>? Users { get; set; }
-        //public DbSet<Models.Entities.Task>? Tasks { get; set; }
-        //public DbSet<Service>? Services { get; set; }
+        public DbSet<Customer>? Customers { get; set; }
+        public DbSet<Service>? Services { get; set; }
+        public DbSet<ServiceProvider>? ServiceProviders { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

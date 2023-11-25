@@ -1,7 +1,5 @@
 ﻿using Domain.Enums;
-using Domain.Models.Entities;
 using Domain.Models.Responses;
-using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace Domain.Models.Dtos
@@ -17,9 +15,6 @@ namespace Domain.Models.Dtos
         [DataMember(Name = "lastName")]
         public string LastName { get; set; }
 
-        [DataMember(Name = "userType")]
-        public UserType UserType { get; set; }
-
         [DataMember(Name = "phoneNumber")]
         public string PhoneNumber { get; set; }
 
@@ -31,10 +26,6 @@ namespace Domain.Models.Dtos
 
         [DataMember(Name = "prefferedLanguage")]
         public string? PrefferedLanguage { get; set; }
-        
-        /*
-        [DataMember(Name = "mainSkill")]
-        public Skill? MainSkill { get; set; }*/
 
         [DataMember(Name = "token")]
         public string Token { get; set; }

@@ -5,18 +5,18 @@ using SharedServices;
 
 namespace AdminService.Adapter
 {
-    public class UserAdapter : IUserAdapter
+    public class CustomerAdapter : ICustomerAdapter
     {
-        private readonly IRepository<User, Guid> _repo;
+        private readonly IRepository<Customer, Guid> _repo;
 
-        public UserAdapter(IRepository<User, Guid> repo) 
+        public CustomerAdapter(IRepository<Customer, Guid> repo) 
         { 
             _repo= repo;
         }
 
         public void Register(UserDto request)
         {
-            var entity = new User();
+            var entity = new Customer();
             entity.ToEntity(request);
             _repo.Add(entity);
             _repo.Save();
@@ -32,7 +32,7 @@ namespace AdminService.Adapter
             return true;
         }
 
-        public User GetUserByEmail(string email)
+        public Customer GetUserByEmail(string email)
         {
             return _repo.Get(x => x.Email == email).FirstOrDefault();
         }

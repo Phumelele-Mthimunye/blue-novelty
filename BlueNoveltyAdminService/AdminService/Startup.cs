@@ -62,11 +62,11 @@ namespace AdminService
             });
 
             //services
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 
             //adapters
-            services.AddScoped<IUserAdapter, UserAdapter>();
+            services.AddScoped<ICustomerAdapter, CustomerAdapter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

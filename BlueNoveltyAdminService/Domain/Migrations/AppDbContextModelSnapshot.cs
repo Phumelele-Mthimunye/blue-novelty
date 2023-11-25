@@ -33,6 +33,10 @@ namespace Domain.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("active");
 
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_Id");
+
                     b.Property<DateOnly?>("DateOfRequest")
                         .IsRequired()
                         .HasColumnType("date")
@@ -43,6 +47,10 @@ namespace Domain.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("householdDetail_Id");
 
+                    b.Property<Guid?>("ServiceProviderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("serviceProvider_Id");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer")
                         .HasColumnName("status");
@@ -52,20 +60,69 @@ namespace Domain.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("totalPrice");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_Id");
-
-                    b.Property<Guid?>("userId")
+                    b.Property<Guid?>("customerId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("HouseholdDetailId");
 
-                    b.HasIndex("userId");
+                    b.HasIndex("ServiceProviderId");
+
+                    b.HasIndex("customerId");
 
                     b.ToTable("CleaningRequests");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Email");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("FirstName");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("LastName");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("PasswordHash");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("PasswordSalt");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("PhoneNumber");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.HouseholdCleaningPricing", b =>
@@ -79,20 +136,19 @@ namespace Domain.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("active");
 
+                    b.Property<string>("CleaningTask")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("cleaningTask");
+
+                    b.Property<string>("CleaningTaskDescription")
+                        .HasColumnType("text")
+                        .HasColumnName("cleaningTaskDescription");
+
                     b.Property<decimal?>("Price")
                         .IsRequired()
                         .HasColumnType("numeric")
                         .HasColumnName("price");
-
-                    b.Property<string>("Room")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("room");
-
-                    b.Property<string>("RoomServiceDescription")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("roomServiceDescription");
 
                     b.HasKey("Id");
 
@@ -110,24 +166,76 @@ namespace Domain.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("active");
 
-                    b.Property<int>("NumberOfAdditionalRooms")
-                        .HasColumnType("integer")
-                        .HasColumnName("numberOfAdditionalRooms");
+                    b.Property<bool?>("Cabinets")
+                        .IsRequired()
+                        .HasColumnType("boolean")
+                        .HasColumnName("cabinets");
 
-                    b.Property<int>("NumberOfBathrooms")
+                    b.Property<bool?>("Fridge")
+                        .IsRequired()
+                        .HasColumnType("boolean")
+                        .HasColumnName("fridge");
+
+                    b.Property<bool?>("Garage")
+                        .IsRequired()
+                        .HasColumnType("boolean")
+                        .HasColumnName("garage");
+
+                    b.Property<bool?>("Laundry")
+                        .IsRequired()
+                        .HasColumnType("boolean")
+                        .HasColumnName("laundry");
+
+                    b.Property<int?>("NumberOfBathrooms")
+                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("numberOfBathrooms");
 
-                    b.Property<int>("NumberOfBedrooms")
+                    b.Property<int?>("NumberOfBedrooms")
+                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("numberOfBedrooms");
+
+                    b.Property<bool?>("Walls")
+                        .IsRequired()
+                        .HasColumnType("boolean")
+                        .HasColumnName("walls");
+
+                    b.Property<bool?>("Windows")
+                        .IsRequired()
+                        .HasColumnType("boolean")
+                        .HasColumnName("windows");
 
                     b.HasKey("Id");
 
                     b.ToTable("HouseholdDetails");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.User", b =>
+            modelBuilder.Entity("Domain.Models.Entities.Service", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<string>("ServiceDescription")
+                        .HasColumnType("text")
+                        .HasColumnName("serviceDescription");
+
+                    b.Property<string>("ServiceName")
+                        .HasColumnType("text")
+                        .HasColumnName("serviceName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.ServiceProvider", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,6 +247,7 @@ namespace Domain.Migrations
                         .HasColumnName("active");
 
                     b.Property<DateOnly?>("DateOfBirth")
+                        .IsRequired()
                         .HasColumnType("date")
                         .HasColumnName("DateOfBirth");
 
@@ -176,10 +285,6 @@ namespace Domain.Migrations
                         .HasColumnType("text")
                         .HasColumnName("PrefferedLanguage");
 
-                    b.Property<int>("UserType")
-                        .HasColumnType("integer")
-                        .HasColumnName("UserType");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text")
@@ -187,7 +292,7 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("ServiceProviders");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.CleaningRequest", b =>
@@ -198,13 +303,24 @@ namespace Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Entities.User", "User")
+                    b.HasOne("Domain.Models.Entities.ServiceProvider", "ServiceProvider")
                         .WithMany("CleaningRequests")
-                        .HasForeignKey("userId");
+                        .HasForeignKey("ServiceProviderId");
+
+                    b.HasOne("Domain.Models.Entities.Customer", "Customer")
+                        .WithMany("CleaningRequests")
+                        .HasForeignKey("customerId");
+
+                    b.Navigation("Customer");
 
                     b.Navigation("HouseholdDetail");
 
-                    b.Navigation("User");
+                    b.Navigation("ServiceProvider");
+                });
+
+            modelBuilder.Entity("Domain.Models.Entities.Customer", b =>
+                {
+                    b.Navigation("CleaningRequests");
                 });
 
             modelBuilder.Entity("Domain.Models.Entities.HouseholdDetail", b =>
@@ -212,7 +328,7 @@ namespace Domain.Migrations
                     b.Navigation("CleaningRequests");
                 });
 
-            modelBuilder.Entity("Domain.Models.Entities.User", b =>
+            modelBuilder.Entity("Domain.Models.Entities.ServiceProvider", b =>
                 {
                     b.Navigation("CleaningRequests");
                 });
