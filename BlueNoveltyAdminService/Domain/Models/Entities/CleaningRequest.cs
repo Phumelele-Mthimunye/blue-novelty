@@ -1,5 +1,7 @@
 ﻿using Domain.Enums;
-using Domain.Models.Dtos.CleaningRequest;
+using Domain.Models.Dtos.Create;
+using Domain.Models.Dtos.Read;
+using Domain.Models.Dtos.Update;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +12,7 @@ namespace Domain.Models.Entities
     {
         [Required]
         [Column("dateOfRequest")]
-        public DateOnly? DateOfRequest { get; set; }
+        public DateTime? DateOfRequest { get; set; }
 
         [Required]
         [Column("status")]
@@ -21,20 +23,20 @@ namespace Domain.Models.Entities
         public decimal? TotalPrice { get; set; }
 
         [Column("customer_Id")]
-        public Guid? CustomerId { get; set; }
+        public long? CustomerId { get; set; }
 
         [ForeignKey("customerId")]
         public virtual Customer? Customer { get; set; }
 
         [Required]
         [Column("householdDetail_Id")]
-        public Guid? HouseholdDetailId { get; set; }
+        public long? HouseholdDetailId { get; set; }
 
         [ForeignKey("HouseholdDetailId")]
         public virtual HouseholdDetail? HouseholdDetail { get; set; }
 
         [Column("serviceProvider_Id")]
-        public Guid? ServiceProviderId { get; set; }
+        public long? ServiceProviderId { get; set; }
 
         [ForeignKey("ServiceProviderId")]
         public virtual ServiceProvider? ServiceProvider { get; set; }
@@ -44,6 +46,19 @@ namespace Domain.Models.Entities
         public CleaningRequest(CleaningRequestDTO request)
         {
 
+        }
+
+        public CleaningRequestDetailDTO ToDto()
+        {
+            return new CleaningRequestDetailDTO()
+            {
+
+            };
+        }
+
+        public void MapUpdateValues(CleaningRequestWithIdDTO request)
+        {
+            
         }
     }
 }

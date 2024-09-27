@@ -1,9 +1,9 @@
-﻿using Domain.Models.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
 using Domain.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SharedServices;
+using Domain.Models.Interfaces.Services;
 
 namespace BlueNoveltyAdminService.Controllers
 {

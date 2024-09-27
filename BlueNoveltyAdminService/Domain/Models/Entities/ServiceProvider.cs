@@ -39,14 +39,16 @@ namespace Domain.Models.Entities
 
         [Required]
         [Column("DateOfBirth")]
-        public DateOnly? DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         [Column("PrefferedLanguage")]
         public string? PrefferedLanguage { get; set; }
 
         public virtual List<CleaningRequest>? CleaningRequests { get; set; }
 
-        public void ToEntity(UserDto request)
+        public ServiceProvider() { }
+
+        public ServiceProvider(UserDto request)
         {
             Active = true;
             Username = request.Username;

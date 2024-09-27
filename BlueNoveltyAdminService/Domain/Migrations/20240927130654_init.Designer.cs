@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231125153150_init")]
+    [Migration("20240927130654_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,31 +26,33 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.CleaningRequest", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("boolean")
                         .HasColumnName("active");
 
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uuid")
+                    b.Property<long?>("CustomerId")
+                        .HasColumnType("bigint")
                         .HasColumnName("customer_Id");
 
-                    b.Property<DateOnly?>("DateOfRequest")
+                    b.Property<DateTime?>("DateOfRequest")
                         .IsRequired()
-                        .HasColumnType("date")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("dateOfRequest");
 
-                    b.Property<Guid?>("HouseholdDetailId")
+                    b.Property<long?>("HouseholdDetailId")
                         .IsRequired()
-                        .HasColumnType("uuid")
+                        .HasColumnType("bigint")
                         .HasColumnName("householdDetail_Id");
 
-                    b.Property<Guid?>("ServiceProviderId")
-                        .HasColumnType("uuid")
+                    b.Property<long?>("ServiceProviderId")
+                        .HasColumnType("bigint")
                         .HasColumnName("serviceProvider_Id");
 
                     b.Property<int>("Status")
@@ -62,8 +64,8 @@ namespace Domain.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("totalPrice");
 
-                    b.Property<Guid?>("customerId")
-                        .HasColumnType("uuid");
+                    b.Property<long?>("customerId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -78,10 +80,12 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.Customer", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("boolean")
@@ -129,10 +133,12 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.HouseholdCleaningPricing", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("boolean")
@@ -159,10 +165,12 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.HouseholdDetail", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("boolean")
@@ -215,10 +223,12 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.Service", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("boolean")
@@ -239,18 +249,20 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Models.Entities.ServiceProvider", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("boolean")
                         .HasColumnName("active");
 
-                    b.Property<DateOnly?>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .IsRequired()
-                        .HasColumnType("date")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("DateOfBirth");
 
                     b.Property<string>("Email")

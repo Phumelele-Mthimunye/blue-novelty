@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models.Entities
 {
-    public class BaseEntity : IEntityFrameworkObjectId<Guid>
+    public class BaseEntity : IEntityFrameworkObjectId<long>
     {
         [Key]
         [Column("id")]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         [Column("active")]
         [Required]

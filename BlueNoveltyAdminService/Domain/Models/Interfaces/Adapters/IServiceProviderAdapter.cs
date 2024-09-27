@@ -1,13 +1,13 @@
 ﻿using Domain.Models.Dtos;
 using Domain.Models.Entities;
 
-namespace Domain.Models.Interfaces
+namespace Domain.Models.Interfaces.Adapters
 {
-    public interface ICustomerAdapter
+    public interface IServiceProviderAdapter
     {
         void Register(UserDto user);
         bool EmailExists(string email);
-        Customer GetUserByEmail(string email);
+        Domain.Models.Entities.ServiceProvider GetUserByEmail(string email);
         UserResponse Login(LoginDto request);
     }
 }
