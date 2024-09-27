@@ -64,15 +64,6 @@ namespace AdminService
                 };
 
             });
-            services.AddScoped<IRequestContextService<long>, RequestContextService<long>>();
-
-            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.AddScoped<IRepository<Customer, long>, Repository<Customer, long>>();
-            services.AddScoped<IRepository<Domain.Models.Entities.ServiceProvider, long>, Repository<Domain.Models.Entities.ServiceProvider, long>>();
-            services.AddScoped<IRepository<Service, long>, Repository<Service, long>>();
-            services.AddScoped<IRepository<CleaningRequest, long>, Repository<CleaningRequest, long>>();
-            services.AddScoped<IRepository<HouseholdCleaningPricing, long>, Repository<HouseholdCleaningPricing, long>>();
-            services.AddScoped<IRepository<HouseholdDetail, long>, Repository<HouseholdDetail, long>>();
 
             //services
             services.AddScoped<ICustomerService, CustomerService>();
