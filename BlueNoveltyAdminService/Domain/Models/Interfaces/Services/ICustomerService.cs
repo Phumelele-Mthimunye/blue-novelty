@@ -1,7 +1,7 @@
 ﻿using Domain.Models.Dtos;
 using SharedServices;
 
-namespace Domain.Models.Interfaces
+namespace Domain.Models.Interfaces.Services
 {
     public interface ICustomerService
     {

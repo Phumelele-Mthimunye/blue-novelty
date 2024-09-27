@@ -1,5 +1,4 @@
-﻿using Domain.Models.Interfaces;
-using Domain.Models.Dtos;
+﻿using Domain.Models.Dtos;
 using Domain.Models.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +9,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Domain.Models;
+using Domain.Models.Interfaces.Adapters;
+using Domain.Models.Interfaces.Services;
 
 namespace AdminService.Services
 {

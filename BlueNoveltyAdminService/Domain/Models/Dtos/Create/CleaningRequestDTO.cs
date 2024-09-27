@@ -1,4 +1,4 @@
-﻿namespace Domain.Models.Dtos.CleaningRequest
+namespace Domain.Models.Dtos.Create
 {
     public class CleaningRequestDTO
     {

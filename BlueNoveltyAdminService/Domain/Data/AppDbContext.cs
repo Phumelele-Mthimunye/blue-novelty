@@ -12,15 +12,14 @@ namespace Domain.Data
             var optionBuilder = new DbContextOptionsBuilder<AppDbContext>();
             optionBuilder.UseNpgsql("Host=localhost;Port=5432;Database=BlueNovelty;Username=postgres;Password=Gem@123!!");
 
-            return new AppDbContext(optionBuilder.Options, null);
+            return new  AppDbContext(optionBuilder.Options);
         }
     }
     public class AppDbContext : DbContext
     {
-        private IRequestContextService<long> _requestContextService;
-        public AppDbContext(DbContextOptions options, IRequestContextService<long> requestContextService): base(options)
+        //private IRequestContextService<long> _requestContextService;
+        public AppDbContext(DbContextOptions options): base(options)
         {
-            _requestContextService = requestContextService;
         }     
 
         //Models
@@ -30,8 +29,8 @@ namespace Domain.Data
         public DbSet<Customer>? Customers { get; set; }
         public DbSet<Service>? Services { get; set; }
         public DbSet<ServiceProvider>? ServiceProviders { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-        }
+        }*/
     }
 }

@@ -22,7 +22,7 @@ namespace Domain.Models.Dtos
         public string Email { get; set; }
 
         [DataMember(Name = "dateOfBirth")]
-        public DateOnly? DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         [DataMember(Name = "prefferedLanguage")]
         public string? PrefferedLanguage { get; set; }

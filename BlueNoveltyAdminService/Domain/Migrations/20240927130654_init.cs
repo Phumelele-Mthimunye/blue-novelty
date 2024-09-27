@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -13,7 +14,8 @@ namespace Domain.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
@@ -32,7 +34,8 @@ namespace Domain.Migrations
                 name: "HouseholdCleaningPricings",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     cleaningTask = table.Column<string>(type: "text", nullable: false),
                     cleaningTaskDescription = table.Column<string>(type: "text", nullable: true),
                     price = table.Column<decimal>(type: "numeric", nullable: false),
@@ -47,7 +50,8 @@ namespace Domain.Migrations
                 name: "HouseholdDetails",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     numberOfBedrooms = table.Column<int>(type: "integer", nullable: false),
                     numberOfBathrooms = table.Column<int>(type: "integer", nullable: false),
                     laundry = table.Column<bool>(type: "boolean", nullable: false),
@@ -67,7 +71,8 @@ namespace Domain.Migrations
                 name: "ServiceProviders",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
@@ -75,7 +80,7 @@ namespace Domain.Migrations
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "bytea", nullable: false),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     PrefferedLanguage = table.Column<string>(type: "text", nullable: true),
                     active = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -88,7 +93,8 @@ namespace Domain.Migrations
                 name: "Services",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     serviceName = table.Column<string>(type: "text", nullable: true),
                     serviceDescription = table.Column<string>(type: "text", nullable: true),
                     active = table.Column<bool>(type: "boolean", nullable: false)
@@ -102,14 +108,15 @@ namespace Domain.Migrations
                 name: "CleaningRequests",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    dateOfRequest = table.Column<DateOnly>(type: "date", nullable: false),
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    dateOfRequest = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
                     totalPrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    customer_Id = table.Column<Guid>(type: "uuid", nullable: true),
-                    customerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    householdDetail_Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    serviceProvider_Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    customer_Id = table.Column<long>(type: "bigint", nullable: true),
+                    customerId = table.Column<long>(type: "bigint", nullable: true),
+                    householdDetail_Id = table.Column<long>(type: "bigint", nullable: false),
+                    serviceProvider_Id = table.Column<long>(type: "bigint", nullable: true),
                     active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>

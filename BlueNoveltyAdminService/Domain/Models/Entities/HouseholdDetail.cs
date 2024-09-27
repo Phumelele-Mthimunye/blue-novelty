@@ -1,4 +1,7 @@
 ﻿using Domain.Enums;
+using Domain.Models.Dtos.Create;
+using Domain.Models.Dtos.Read;
+using Domain.Models.Dtos.Update;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -40,5 +43,26 @@ namespace Domain.Models.Entities
         public bool? Walls { get; set; }
 
         public virtual List<CleaningRequest>? CleaningRequests { get; set; }
+
+        public HouseholdDetail()
+        {
+        }
+
+        public HouseholdDetail(HouseholdDetailDTO request) 
+        { 
+        }
+
+        public HouseholdDetailDetailDTO ToDto()
+        {
+            return new HouseholdDetailDetailDTO()
+            {
+
+            };
+        }
+
+        public void MapUpdateValues(HouseholdDetailWithIdDTO request)
+        {
+            
+        }
     }
 }

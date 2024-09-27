@@ -40,7 +40,9 @@ namespace Domain.Models.Entities
 
         public virtual List<CleaningRequest>? CleaningRequests { get; set; }
 
-        public void ToEntity(UserDto request)
+        public Customer() { }
+
+        public Customer(UserDto request)
         {
             Active = true;
             Username = request.Username;

@@ -4,11 +4,15 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using AdminService.Services;
-using AdminService.Adapter;
 using SharedServices;
 using Domain.Data;
 using Domain.Models;
-using Domain.Models.Interfaces;
+using Domain.Models.Interfaces.Adapters;
+using Domain.Models.Interfaces.Services;
+using AdminService.Adapters;
+using SharedServices.ApiMiddleware.Interfaces;
+using SharedServices.ApiMiddleware.Services;
+using Domain.Models.Entities;
 
 namespace AdminService
 {
@@ -60,13 +64,30 @@ namespace AdminService
                 };
 
             });
+            services.AddScoped<IRequestContextService<long>, RequestContextService<long>>();
+
+            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            services.AddScoped<IRepository<Customer, long>, Repository<Customer, long>>();
+            services.AddScoped<IRepository<Domain.Models.Entities.ServiceProvider, long>, Repository<Domain.Models.Entities.ServiceProvider, long>>();
+            services.AddScoped<IRepository<Service, long>, Repository<Service, long>>();
+            services.AddScoped<IRepository<CleaningRequest, long>, Repository<CleaningRequest, long>>();
+            services.AddScoped<IRepository<HouseholdCleaningPricing, long>, Repository<HouseholdCleaningPricing, long>>();
+            services.AddScoped<IRepository<HouseholdDetail, long>, Repository<HouseholdDetail, long>>();
 
             //services
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            services.AddScoped<ICleaningRequestService, CleaningRequestService>();
+            services.AddScoped<IHouseholdDetailService, HouseholdDetailService>();
+            services.AddScoped<IServiceProviderService, ServiceProviderService>();
+            services.AddScoped<IServiceService, ServiceService>();
 
             //adapters
             services.AddScoped<ICustomerAdapter, CustomerAdapter>();
+            services.AddScoped<ICleaningRequestAdapter, CleaningRequestAdapter>();
+            services.AddScoped<IHouseholdDetailAdapter, HouseholdDetailAdapter>();
+            services.AddScoped<IServiceProviderAdapter, ServiceProviderAdapter>();
+            services.AddScoped<IServiceAdapter, ServiceAdapter>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,7 +7,7 @@ namespace Domain.Models.Responses
     public class ResponseBase
     {
         [DataMember(Name = "id")]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         [DataMember(Name = "active")]
         public bool Active { get; set; }
